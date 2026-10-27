@@ -21,7 +21,8 @@ return function(core: Instance, shared: typeof({}), self: typeof({}))
             team = TEAM_ID_BLUE;
             blueCount += 1;
         end
-        plr.TeamId = team;
+
+        plr.Team = team - 1; -- what?
 
         players[plr] = {
             Team = team,
@@ -35,6 +36,12 @@ return function(core: Instance, shared: typeof({}), self: typeof({}))
         local data = players[plr];
         if (not data) then
             return;
+        end;
+
+        if (data.Team == TEAM_ID_RED) then
+            redCount -= 1;
+        else
+            blueCount -= 1;
         end;
 
         players[plr] = nil;

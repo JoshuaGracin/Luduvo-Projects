@@ -32,56 +32,101 @@ return function(core: Instance, shared: typeof({}), self: typeof({}))
         return flag;
     end;
 
+    local Intersects = function(a: Instance, b: Instance)
+        if (not a or not a:IsAlive() or not b or not b:IsAlive()) then
+            return false;
+        end;
+
+        local apos, bpos = a.Position, b.Position;
+        return (math.abs(bpos.X - apos.X) <= 6 and math.abs(bpos.Y - apos.Y) <= 6 and math.abs(bpos.Z - apos.Z) <= 6);
+    end;
+
     local redFlag, blueFlag = MakeFlag(redPoint.Color, redPoint.Position), MakeFlag(bluePoint.Color, bluePoint.Position);
     local redHolder, blueHolder = nil, nil;
 
-    task.defer(function()
-        while (true) do
-            local dt = task.wait(0.016);
+    self.Init = function()
+        local players = TeamSelection.Players;
 
-            for team = 1, 2 do
-                local flag = if (team == 1) then redFlag else blueFlag;
-                local holder = if (team == 1) then redHolder else blueHolder;
+        task.defer(function()
+            while (true) do
+                task.wait(0.016);
 
-                -- respawn flag
-                if (not flag or not flag:IsAlive()) then
+                for team = 1, 2 do
+                    local flag = if (team == 1) then redFlag else blueFlag;
+                    local point = if (team == 1) then bluePoint else redPoint;
+                    local holder = if (team == 1) then redHolder else blueHolder;
 
-                    if (holder and holder:IsAlive()) then
-                        holder:RemoveComponent('Backpack');
-                    end;
-                    
-                    local point = if (team == 1) then redPoint else bluePoint;
-                    flag = MakeFlag(point.Color, point.Position);
+                    for i: Instance, v in players do
+                        local character = v.Character;
+                        if ((not character or not character:IsAlive()) or v.Team == team) then
+                            continue;
+                        end;
 
-                    if (team == 1) then
-                        redFlag = flag;
-                        redHolder = nil;
-                    else
-                        blueFlag = flag;
-                        blueHolder = nil;
-                    end;
-                    
-                    continue;
-                end;
+                        -- if holder then allow pickup
+                        if (holder and holder:IsAlive()) then
+                            if (not character:HasComponent('Backpack')) then
+                                character:AddComponent('Backpack');
+                            end;
+                            continue;
+                        end;
 
-                if (not holder or not holder:IsAlive()) then
-                    local a = flag.Parent;
-                    if (a and a.Parent) then
-                        if (team == 1) then
-                            redHolder = a.Parent;
+                        -- if said team is at there flag make sure they cant pick it up
+                        if (Intersects(character, point)) then
+                            if (not character:HasComponent('Backpack')) then
+                                character:AddComponent('Backpack');
+                            end;
                         else
-                            blueHolder = a.Parent;
+
+                            if (character:HasComponent('Backpack')) then
+                                character:RemoveComponent('Backpack');
+                            end;
                         end;
                     end;
+
+                    -- respawn flag
+                    if (not flag or not flag:IsAlive()) then
+
+                        local spawn = if (team == 1) then redPoint else bluePoint;
+                        flag = MakeFlag(spawn.Color, spawn.Position);
+
+                        if (team == 1) then
+                            redFlag = flag;
+                            redHolder = nil;
+                        else
+                            blueFlag = flag;
+                            blueHolder = nil;
+                        end;
+
+                        logger('Flag respawned');
+                        continue;
+                    end;
+
+                    -- is being held else spin
+                    if (not holder or not holder:IsAlive()) then
+                        local a = flag.Parent;
+                        if (a and a.Parent) then
+                            if (team == 1) then
+                                redHolder = a.Parent;
+                            else
+                                blueHolder = a.Parent;
+                            end;
+                            logger(`Got holder for {team}, {a.Parent}`);
+                        end;
+                        
+                        -- spin flag :>
+                        (CFrame.fromInstance(flag) * CFrame.Angles(0, math.rad(1.5), 0)):toInstance(flag);
+                        continue;
+                    end;
+
+                    -- win for said team
+                    if (flag and flag:IsAlive() and Intersects(flag, point)) then
+                        logger(`{team} got a point`);
+                        flag:Destroy();
+                    end;
                     
-                    -- spin flag :>
-                    (CFrame.fromInstance(flag) * CFrame.Angles(0, math.rad(2), 0)):toInstance(flag);
-
-                    continue;
                 end;
-
             end;
-        end;
-    end);
+        end);
+    end;
 
 end;
