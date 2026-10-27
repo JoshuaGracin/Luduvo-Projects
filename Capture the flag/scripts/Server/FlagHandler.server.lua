@@ -26,8 +26,13 @@ return function(core: Instance, shared: typeof({}), self: typeof({}))
         if (not flag:HasComponent('Tool')) then
             flag:AddComponent('Tool');
         end;
-    
+
         flag.Tool.noDrop = 1;
+
+        flag.Equipped:Connect(function(plr: Instance)
+            -- Todo handle looks :>            
+        end);
+
 
         return flag;
     end;
@@ -72,14 +77,14 @@ return function(core: Instance, shared: typeof({}), self: typeof({}))
 
                         -- if said team is at there flag make sure they cant pick it up
                         if (Intersects(character, point)) then
-                            if (not character:HasComponent('Backpack')) then
-                                character:AddComponent('Backpack');
-                            end;
-                        else
-
                             if (character:HasComponent('Backpack')) then
                                 character:RemoveComponent('Backpack');
                             end;
+                        else
+                            if (not character:HasComponent('Backpack')) then
+                                character:AddComponent('Backpack');
+                            end;
+
                         end;
                     end;
 
