@@ -1,6 +1,6 @@
 {
 	"name":	"Capture the flag",
-	"next_row":	"000000000000000a",
+	"next_row":	"000000000000000c",
 	"assets":	{
 		"2400000000000001":	{
 			"type":	"script",
@@ -54,6 +54,18 @@
 			"type":	"script",
 			"path":	"scripts/Modules/Logger.client.lua",
 			"checksum":	"fnv1a:6bb8abcbf6fe0786",
+			"uploaded":	false
+		},
+		"240000000000000a":	{
+			"type":	"script",
+			"path":	"scripts/Server/ServerInit.server.lua",
+			"checksum":	"fnv1a:cbf29ce484222325",
+			"uploaded":	false
+		},
+		"240000000000000b":	{
+			"type":	"script",
+			"path":	"scripts/Server/FlagHandler.server.lua",
+			"checksum":	"fnv1a:fcbea1f9b95b1f7d",
 			"uploaded":	false
 		}
 	}
