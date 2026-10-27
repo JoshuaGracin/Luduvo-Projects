@@ -1,0 +1,7 @@
+{
+    "luduvo-lsp.sourcemap.autogenerate": false,
+    "luduvo-lsp.sourcemap.enabled": false,
+    "luduvo-lsp.sourcemap.includeNonScripts": false,
+    "luduvo-lsp.fflags.enableNewSolver": true,
+    "luduvo-lsp.diagnostics.workspace": false,
+}

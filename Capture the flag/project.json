@@ -1,0 +1,60 @@
+{
+	"name":	"Capture the flag",
+	"next_row":	"000000000000000a",
+	"assets":	{
+		"2400000000000001":	{
+			"type":	"script",
+			"path":	"scripts/Part.server.lua",
+			"checksum":	"fnv1a:f77c0bb2f6d15d7b",
+			"uploaded":	false
+		},
+		"2400000000000002":	{
+			"type":	"script",
+			"path":	"scripts/RenderDisabled.server.lua",
+			"checksum":	"fnv1a:309c49d818adf7e9",
+			"uploaded":	false
+		},
+		"2400000000000003":	{
+			"type":	"script",
+			"path":	"scripts/Server/RenderDisabled.server.lua",
+			"checksum":	"fnv1a:da0955d29ab2d341",
+			"uploaded":	false
+		},
+		"2400000000000004":	{
+			"type":	"script",
+			"path":	"scripts/Modules/CFrame.client.lua",
+			"checksum":	"fnv1a:46a1527e810ad1e8",
+			"uploaded":	false
+		},
+		"2400000000000005":	{
+			"type":	"script",
+			"path":	"scripts/Server/TeamSelection.server.lua",
+			"checksum":	"fnv1a:cbf29ce484222325",
+			"uploaded":	false
+		},
+		"2400000000000006":	{
+			"type":	"script",
+			"path":	"scripts/CFrame.client.lua",
+			"checksum":	"fnv1a:46a1527e810ad1e8",
+			"uploaded":	false
+		},
+		"2400000000000007":	{
+			"type":	"script",
+			"path":	"scripts/CFrame.server.lua",
+			"checksum":	"fnv1a:edaff67533630a58",
+			"uploaded":	false
+		},
+		"2400000000000008":	{
+			"type":	"script",
+			"path":	"scripts/CFrame-1.client.lua",
+			"checksum":	"fnv1a:edaff67533630a58",
+			"uploaded":	false
+		},
+		"2400000000000009":	{
+			"type":	"script",
+			"path":	"scripts/Modules/Logger.client.lua",
+			"checksum":	"fnv1a:6bb8abcbf6fe0786",
+			"uploaded":	false
+		}
+	}
+}
