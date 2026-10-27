@@ -74,7 +74,7 @@ return function(core: Instance, shared: typeof({}), self: typeof({}))
                         end;
                     end;
                     
-                    -- spin flag :>
+                    -- spin flag :> idk
                     (CFrame.fromInstance(flag) * CFrame.Angles(0, math.rad(2), 0)):toInstance(flag);
 
                     continue;
