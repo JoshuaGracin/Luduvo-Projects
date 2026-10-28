@@ -2,7 +2,7 @@ local logger = {};
 logger.__index = logger;
 
 logger.__call = function(_, text, _type)
-    return print(`[{os.date("%H:%M:%S")}] [{debug.info(2, "s"):gsub("scripts/", ""):gsub(".server", ""):gsub(".client", "")}] {string.upper(_type or "INFO")}: {text}`);
+    return print(`[{debug.info(2, "s"):gsub("scripts/", ""):gsub(".server", ""):gsub(".client", "")}] {string.upper(_type or "INFO")}: {text}`);
 end;
 
 logger.Log = function(text, _type)
@@ -14,7 +14,7 @@ logger.Assert = function(a, _type, arg)
         return;
     end;
 
-    return error(`[{os.date("%H:%M:%S")}] [{debug.info(2, "s"):gsub("scripts/", ""):gsub(".server", ""):gsub(".client", "")}] "ASSERT": {`invalid argument #{arg or 'undefined'} to '{debug.info(2, 'n')}' ({_type} expected, got {typeof(a)})`}`, 2);
+    return error(`[{debug.info(2, "s"):gsub("scripts/", ""):gsub(".server", ""):gsub(".client", "")}] "ASSERT": {`invalid argument #{arg or 'undefined'} to '{debug.info(2, 'n')}' ({_type} expected, got {typeof(a)})`}`, 2);
 end;
 
 return setmetatable({}, logger);

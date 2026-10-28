@@ -11,9 +11,17 @@ return function(core: Instance, shared: typeof({}), self: typeof({}))
     local redPoint = Workspace:FindFirstChild('Points'):FindFirstChild('Red');
     local bluePoint = Workspace:FindFirstChild('Points'):FindFirstChild('Blue');
 
+    local SetRenderDisabled = function(a: Instance)
+        a:AddComponent('RenderDisabled');
+        for i, v in a:GetChildren() do
+            v:AddComponent('RenderDisabled');
+        end;
+    end;
+
     local MakeFlag = function(color: vector?, pos: vector?)
         local flag = flagPrim:Clone();
         flag.Parent = Workspace;
+        local vis: Instance? = nil;
 
         if (pos) then
             flag.Position = pos;
@@ -30,9 +38,23 @@ return function(core: Instance, shared: typeof({}), self: typeof({}))
         flag.Tool.noDrop = 1;
 
         flag.Equipped:Connect(function(plr: Instance)
-            -- Todo handle looks :>            
-        end);
+            SetRenderDisabled(flag);
+            if (vis) then
+                return;
+            end;
 
+            local char = plr.Character;
+            vis = flagPrim:Clone();
+            flag.Other = vis;
+
+            if (color) then
+                vis:FindFirstChild('Flag').Color = color;
+            end;
+
+            (CFrame.fromInstance(char) * CFrame.new(0, 0, 0.5) * (CFrame.Angles(0, math.rad(180), 0) * CFrame.Angles(0, 0, math.rad(45)))):toInstance(vis);
+            vis.Parent = char;
+            vis.Other = char;
+        end);
 
         return flag;
     end;
@@ -67,14 +89,6 @@ return function(core: Instance, shared: typeof({}), self: typeof({}))
                             continue;
                         end;
 
-                        -- if holder then allow pickup
-                        if (holder and holder:IsAlive()) then
-                            if (not character:HasComponent('Backpack')) then
-                                character:AddComponent('Backpack');
-                            end;
-                            continue;
-                        end;
-
                         -- if said team is at there flag make sure they cant pick it up
                         if (Intersects(character, point)) then
                             if (character:HasComponent('Backpack')) then
@@ -84,7 +98,6 @@ return function(core: Instance, shared: typeof({}), self: typeof({}))
                             if (not character:HasComponent('Backpack')) then
                                 character:AddComponent('Backpack');
                             end;
-
                         end;
                     end;
 
@@ -115,6 +128,7 @@ return function(core: Instance, shared: typeof({}), self: typeof({}))
                             else
                                 blueHolder = a.Parent;
                             end;
+
                             logger(`Got holder for {team}, {a.Parent}`);
                         end;
                         
@@ -126,6 +140,9 @@ return function(core: Instance, shared: typeof({}), self: typeof({}))
                     -- win for said team
                     if (flag and flag:IsAlive() and Intersects(flag, point)) then
                         logger(`{team} got a point`);
+                        if (flag.Other) then
+                            flag.Other:Destroy();
+                        end;
                         flag:Destroy();
                     end;
                     
